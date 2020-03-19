@@ -31,8 +31,6 @@ if(!localStorage.getItem('name')) {
 myButton1.onclick = function() {
     setUserName();
 }
-
-
 //测试
 let myButton2 = document.querySelector('#getloc');
 let myLoction=document.querySelector('#location');
@@ -49,14 +47,13 @@ function success(pos) {
         loctext=crd.latitude+'N,';
     }
     else{
-        loctext=crd.latitude.substring(1)+'S,';
+        loctext=(crd.latitude+'S,').substring(1);
     }
     if(crd.longitude>0){
         loctext+=crd.longitude+'E,';
     }
     else{
-        var tmp=crd.longitude;
-        loctext+=tmp.substring(1)+'W,';
+        loctext+=(crd.longitude+'W,').substring(1);
     }
     //console.log('Latitude : ' + crd.latitude);
     //console.log('Longitude: ' + crd.longitude);
@@ -67,6 +64,7 @@ function success(pos) {
 };
 function error(err) {
     console.warn('ERROR(' + err.code + '): ' + err.message);
+    alert("can't get your position")
 };
 myButton2.onclick = function() {
     navigator.geolocation.getCurrentPosition(success, error, options);
