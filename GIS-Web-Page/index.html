@@ -1,28 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>My First page-Zzy's Mission List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIS Geolocation Lab</title>
     <link href="styles/style.css" rel="stylesheet">
   </head>
   <body>
-    <header>
-      <h1>GIS Web Page Test</h1>
-    </header>
-    <nav><!--导航栏-->
-      <ul>
-        <li><a href="">测试页面，尚未开发</a></li>
-      </ul>
-      <form>
-        <input type="search" name="q" placeholder="测试搜索框">
-        <input type="submit" value="搜索">
+    <nav class="top-bar">
+      <a class="back-link" href="../index.html">&larr; Home</a>
+      <span class="page-title">GIS Lab</span>
+      <form class="search-form" id="searchForm">
+        <input type="search" name="q" placeholder="Search...">
+        <button type="submit">Search</button>
       </form>
     </nav>
-    <br>
-    <div align='center'>
-        <button id="getloc">获取位置</button>
-    </div>
-    <p id="location"></p>
+
+    <main>
+      <section class="hero anim-hidden">
+        <div class="globe-visual"></div>
+        <h1>GIS Geolocation Lab</h1>
+        <p>Retrieve and display your real-time coordinates using the HTML5 Geolocation API.</p>
+      </section>
+
+      <section class="locator-card anim-hidden delay-1">
+        <button class="loc-btn" id="getloc">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M12 2v4M12 18v4M2 12h4M18 12h4"></path>
+          </svg>
+          <span class="btn-text">Get Location</span>
+        </button>
+
+        <div class="status-indicator" id="status">
+          <span class="status-dot"></span>
+          <span class="status-msg">Click the button to get your current position</span>
+        </div>
+
+        <div class="result-grid hidden" id="resultGrid">
+          <div class="coord-item" id="latItem">
+            <div class="coord-label">Latitude</div>
+            <div class="coord-value" id="latValue">--</div>
+            <div class="coord-unit" id="latUnit"></div>
+          </div>
+          <div class="coord-item" id="lngItem">
+            <div class="coord-label">Longitude</div>
+            <div class="coord-value" id="lngValue">--</div>
+            <div class="coord-unit" id="lngUnit"></div>
+          </div>
+          <div class="coord-item" id="accItem">
+            <div class="coord-label">Accuracy</div>
+            <div class="coord-value" id="accValue">--</div>
+            <div class="coord-unit" id="accUnit"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; <span class="year"></span> Zzy &middot; <a href="../index.html">Back to Home</a></p>
+    </footer>
+
     <script src="scripts/main.js" defer></script>
   </body>
-</html> 
+</html>

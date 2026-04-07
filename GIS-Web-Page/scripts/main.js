@@ -1,37 +1,161 @@
-let myLoction=document.querySelector('#location');//显示位置
-var options = {
+(function () {
+  "use strict";
+
+  // DOM References
+  const getLocBtn = document.getElementById("getloc");
+  const btnText = getLocBtn.querySelector(".btn-text");
+  const statusEl = document.getElementById("status");
+  const statusMsg = statusEl.querySelector(".status-msg");
+  const resultGrid = document.getElementById("resultGrid");
+  const latValue = document.getElementById("latValue");
+  const latUnit = document.getElementById("latUnit");
+  const lngValue = document.getElementById("lngValue");
+  const lngUnit = document.getElementById("lngUnit");
+  const accValue = document.getElementById("accValue");
+  const accUnit = document.getElementById("accUnit");
+  const searchForm = document.getElementById("searchForm");
+  const yearEl = document.querySelector(".year");
+
+  // Dynamic year
+  if (yearEl) {
+    yearEl.textContent = new Date().getFullYear();
+  }
+
+  // Geolocation options
+  const geoOptions = {
     enableHighAccuracy: true,
-    timeout: 5000,
+    timeout: 8000,
     maximumAge: 0
-};
-function success(pos) {
-    var crd = pos.coords;
-    var loctext
-    //console.log('Your current position is:');
-    if(crd.latitude>0){
-        loctext=crd.latitude+'N,';
+  };
+
+  // Set status display
+  function setStatus(state, message) {
+    statusEl.className = "status-indicator " + state;
+    statusMsg.textContent = message;
+  }
+
+  // Set button loading state
+  function setButtonLoading(isLoading) {
+    if (isLoading) {
+      getLocBtn.classList.add("loading");
+      btnText.textContent = "Locating...";
+    } else {
+      getLocBtn.classList.remove("loading");
+      btnText.textContent = "Get Location";
     }
-    else{
-        loctext=(crd.latitude+'S,').substring(1);
+  }
+
+  // Format coordinate value
+  function formatCoord(value, positive, negative) {
+    const direction = value >= 0 ? positive : negative;
+    return {
+      value: Math.abs(value).toFixed(6) + "\u00B0",
+      unit: direction
+    };
+  }
+
+  // Show result with animation
+  function showResults(lat, lng, accuracy) {
+    const latFormatted = formatCoord(lat, "N", "S");
+    const lngFormatted = formatCoord(lng, "E", "W");
+
+    latValue.textContent = latFormatted.value;
+    latUnit.textContent = latFormatted.unit;
+    lngValue.textContent = lngFormatted.value;
+    lngUnit.textContent = lngFormatted.unit;
+    accValue.textContent = "\u00B1" + accuracy.toFixed(1);
+    accUnit.textContent = "meters";
+
+    resultGrid.classList.remove("hidden");
+
+    const items = resultGrid.querySelectorAll(".coord-item");
+    items.forEach(function (item) {
+      item.classList.remove("show");
+      void item.offsetWidth;
+      item.classList.add("show");
+    });
+  }
+
+  // Geolocation success
+  function onLocationSuccess(pos) {
+    const coords = pos.coords;
+    setButtonLoading(false);
+    setStatus("success", "Location acquired");
+    showResults(coords.latitude, coords.longitude, coords.accuracy);
+  }
+
+  // Geolocation error
+  function onLocationError(err) {
+    setButtonLoading(false);
+
+    const messages = {
+      1: "Permission denied. Please allow location access in your browser.",
+      2: "Position unavailable. Please try again.",
+      3: "Request timed out. Please try again."
+    };
+
+    const message = messages[err.code] || "An unknown error occurred.";
+    setStatus("error", message);
+    console.warn("Geolocation error (" + err.code + "): " + err.message);
+  }
+
+  // Request location
+  function requestLocation() {
+    setButtonLoading(true);
+    setStatus("loading", "Acquiring position...");
+    navigator.geolocation.getCurrentPosition(
+      onLocationSuccess,
+      onLocationError,
+      geoOptions
+    );
+  }
+
+  // Entrance animations (IntersectionObserver)
+  function initAnimations() {
+    const targets = document.querySelectorAll(".anim-hidden");
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.remove("anim-hidden");
+              entry.target.classList.add("anim-in");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      targets.forEach(function (el) {
+        observer.observe(el);
+      });
+    } else {
+      targets.forEach(function (el) {
+        el.classList.remove("anim-hidden");
+      });
     }
-    if(crd.longitude>0){
-        loctext+=crd.longitude+'E,';
+  }
+
+  // Init
+  function init() {
+    // Check Geolocation API support
+    if (!navigator.geolocation) {
+      getLocBtn.disabled = true;
+      setStatus("error", "Your browser does not support geolocation.");
+      return;
     }
-    else{
-        loctext+=(crd.longitude+'W,').substring(1);
-    }
-    //console.log('Latitude : ' + crd.latitude);
-    //console.log('Longitude: ' + crd.longitude);
-    loctext+="miss:"+crd.accuracy+".";
-    //console.log('More or less ' + crd.accuracy + ' meters.');
-    //return loctext;
-    myLoction.textContent = loctext;
-};
-function error(err) {
-    console.warn('ERROR(' + err.code + '): ' + err.message);
-};
-//点击按钮获取位置
-let myButton2 = document.querySelector('#getloc');
-myButton2.onclick = function() {
-    navigator.geolocation.getCurrentPosition(success, error, options);
-}
+
+    getLocBtn.addEventListener("click", requestLocation);
+
+    // Prevent search form from refreshing the page
+    searchForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+    });
+
+    initAnimations();
+  }
+
+  init();
+})();
