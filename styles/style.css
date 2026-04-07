@@ -105,6 +105,10 @@ header p {
   background: linear-gradient(135deg, #f0fff4, #c6f6d5);
 }
 
+.card-icon.portfolio {
+  background: linear-gradient(135deg, #fff7ed, #fed7aa);
+}
+
 /* Card Content */
 .card h2 {
   font-size: 1.35rem;

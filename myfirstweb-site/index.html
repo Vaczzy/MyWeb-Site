@@ -1,30 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>My First page-Zzy's Mission List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaczzy — Portfolio</title>
     <link href="styles/style.css" rel="stylesheet">
   </head>
   <body>
-    <h1>This is Zzy's First Web</h1>
-    <p id="welcome">欢迎您！</p>
-    <img src="images/CSUlogo.jpg" width="20%" height="20%" alt="logo">
-    <h2>课程任务</h2>
-    <ul>
-      <li>1.<strong>高光谱遥感</strong> 第一次实验+第四次课作业+第二次实验+第五次课作业</li>
-      <li>2.<strong>三维激光</strong> 实验+上课***</li>
-      <li>3.<strong>雷达干涉测量</strong> 课后作业/1-3题第三周结束前</li>
-      <li>4.<strong>GIS工程与应用3</strong>  第二章第1讲视频+课后测试</li>
-      <li>5.<strong>地理信息系统3</strong> done</li>
-    </ul>
-    <h2>其他任务</h2>
-    <button id="username">切换用户</button>
-    <button id="getloc">获取位置</button>
-    <p id="location"></p>
-    <p>帮助链接：</p>
-    <a href="https://developer.mozilla.org/zh-CN/docs/Learn/Getting_started_with_the_web/HTML_basics">HTML</a>
-    <a href="https://developer.mozilla.org/zh-CN/docs/Learn/Getting_started_with_the_web/CSS_basics">CSS</a>
-    <a href="https://developer.mozilla.org/zh-CN/docs/Learn/Getting_started_with_the_web/JavaScript_basics">JavaScript</a>
+    <nav class="navbar">
+      <a class="nav-back" href="../index.html">&larr; Home</a>
+      <span class="nav-brand">Vaczzy</span>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+
+    <header class="hero" id="hero">
+      <div class="hero-glow"></div>
+      <div class="hero-content anim-hidden">
+        <div class="hero-avatar">
+          <img src="images/CSUlogo.jpg" alt="Avatar">
+        </div>
+        <h1>Hi, I'm <span class="accent">Vaczzy</span></h1>
+        <p class="hero-tagline">A brief introduction about yourself goes here. Replace this with your own tagline.</p>
+        <div class="hero-cta">
+          <a href="#contact" class="btn btn-primary">Get in Touch</a>
+          <a href="#about" class="btn btn-ghost">Learn More</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="section about" id="about">
+        <div class="section-inner anim-hidden delay-1">
+          <h2 class="section-title">About Me</h2>
+          <div class="about-content">
+            <p>This is a placeholder for your bio. Write a few sentences about who you are, what you do, and what interests you.</p>
+            <p>You can talk about your background, experience, hobbies, or anything else you'd like visitors to know about you.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section contact" id="contact">
+        <div class="section-inner anim-hidden delay-2">
+          <h2 class="section-title">Contact</h2>
+          <div class="contact-grid">
+            <div class="contact-card">
+              <div class="contact-icon">&#9993;</div>
+              <h3>Email</h3>
+              <p>placeholder@example.com</p>
+            </div>
+            <div class="contact-card">
+              <div class="contact-icon">&lt;/&gt;</div>
+              <h3>GitHub</h3>
+              <p><a href="https://github.com/Vaczzy" target="_blank" rel="noopener">github.com/Vaczzy</a></p>
+            </div>
+            <div class="contact-card">
+              <div class="contact-icon">&#128205;</div>
+              <h3>Location</h3>
+              <p>Changsha, China</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; <span class="year"></span> Vaczzy &middot; <a href="../index.html">Back to Home</a></p>
+    </footer>
+
     <script src="scripts/main.js" defer></script>
   </body>
-</html> 
+</html>
