@@ -15,6 +15,12 @@
   const accUnit = document.getElementById("accUnit");
   const searchForm = document.getElementById("searchForm");
   const yearEl = document.querySelector(".year");
+  const mapContainer = document.getElementById("mapContainer");
+
+  // Map state
+  let map = null;
+  let marker = null;
+  let accuracyCircle = null;
 
   // Dynamic year
   if (yearEl) {
@@ -76,12 +82,61 @@
     });
   }
 
+  // Show map with location
+  function showMap(lat, lng, accuracy) {
+    mapContainer.classList.remove("hidden");
+    mapContainer.classList.remove("show");
+    void mapContainer.offsetWidth;
+    mapContainer.classList.add("show");
+
+    const latlng = [lat, lng];
+
+    if (map) {
+      map.setView(latlng, 15);
+      marker.setLatLng(latlng);
+      marker.setPopupContent(
+        "<b>Your Location</b><br>" +
+        lat.toFixed(6) + "\u00B0, " + lng.toFixed(6) + "\u00B0<br>" +
+        "Accuracy: \u00B1" + accuracy.toFixed(1) + "m"
+      );
+      accuracyCircle.setLatLng(latlng);
+      accuracyCircle.setRadius(accuracy);
+      setTimeout(function () { map.invalidateSize(); }, 100);
+      return;
+    }
+
+    map = L.map("map").setView(latlng, 15);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19
+    }).addTo(map);
+
+    accuracyCircle = L.circle(latlng, {
+      radius: accuracy,
+      color: "#22d3ee",
+      fillColor: "#22d3ee",
+      fillOpacity: 0.12,
+      weight: 1
+    }).addTo(map);
+
+    marker = L.marker(latlng).addTo(map);
+    marker.bindPopup(
+      "<b>Your Location</b><br>" +
+      lat.toFixed(6) + "\u00B0, " + lng.toFixed(6) + "\u00B0<br>" +
+      "Accuracy: \u00B1" + accuracy.toFixed(1) + "m"
+    ).openPopup();
+
+    setTimeout(function () { map.invalidateSize(); }, 100);
+  }
+
   // Geolocation success
   function onLocationSuccess(pos) {
     const coords = pos.coords;
     setButtonLoading(false);
     setStatus("success", "Location acquired");
     showResults(coords.latitude, coords.longitude, coords.accuracy);
+    showMap(coords.latitude, coords.longitude, coords.accuracy);
   }
 
   // Geolocation error

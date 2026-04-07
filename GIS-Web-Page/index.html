@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Geolocation Page</title>
     <link href="styles/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   </head>
   <body>
     <nav class="top-bar">
@@ -53,6 +55,10 @@
             <div class="coord-value" id="accValue">--</div>
             <div class="coord-unit" id="accUnit"></div>
           </div>
+        </div>
+
+        <div class="map-container hidden" id="mapContainer">
+          <div id="map"></div>
         </div>
       </section>
     </main>
